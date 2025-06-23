@@ -1,0 +1,127 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinha no topo, para não ficar no meio da tela grande */
+    min-height: 100vh; /* Ocupa 100% da altura da viewport */
+    margin: 0;
+    padding-top: 50px; /* Espaço do topo */
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px; /* Espaço entre o input e o botão */
+    margin-bottom: 25px;
+}
+
+#task-input {
+    flex-grow: 1; /* Faz o input ocupar o máximo de espaço possível */
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+
+#add-task-btn {
+    padding: 12px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+#add-task-btn:hover {
+    background-color: #45a049;
+}
+
+#task-list {
+    list-style: none; /* Remove os marcadores de lista padrão */
+    padding: 0;
+    margin: 0;
+}
+
+#task-list li {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Para tarefas concluídas - você vai adicionar uma classe com JS */
+#task-list li.completed {
+    text-decoration: line-through;
+    color: #999;
+    background-color: #e0e0e0;
+}
+
+/* No seu style.css, adicione/ajuste: */
+
+#task-list li.task-item {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+    color: #555;
+    cursor: pointer; /* Adiciona um cursor de ponteiro para indicar que é clicável */
+}
+
+/* Estilização para o botão de exclusão */
+.delete-btn {
+    background-color: #f44336; /* Cor vermelha */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    margin-left: 15px; /* Espaço entre o texto da tarefa e o botão */
+    flex-shrink: 0; /* Garante que o botão não encolha */
+}
+
+.delete-btn:hover {
+    background-color: #da190b;
+}
+
+/* Já existente, mas importante: */
+#task-list li.completed {
+    text-decoration: line-through;
+    color: #999;
+    background-color: #e0e0e0;
+}
+
+#task-list li span {
+    flex-grow: 1; /* Faz o span do texto crescer para ocupar o espaço */
+    text-align: left; /* Garante que o texto comece à esquerda */
+}
