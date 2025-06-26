@@ -1,47 +1,112 @@
+/* --- Variáveis CSS --- */
+/* Tema Claro (padrão) */
+:root {
+    --bg-color: #f4f4f4; /* Cor de fundo geral */
+    --container-bg: #ffffff; /* Cor de fundo do container */
+    --text-color: #333; /* Cor do texto principal */
+    --input-border-color: #ddd; /* Cor da borda do input */
+    --task-item-bg: #f9f9f9; /* Cor de fundo do item da tarefa */
+    --task-item-border: #eee; /* Cor da borda do item da tarefa */
+    --task-completed-text: #999; /* Cor do texto de tarefa concluída */
+    --task-completed-bg: #e0e0e0; /* Cor de fundo de tarefa concluída */
+    --button-primary-bg: #4CAF50; /* Cor de fundo do botão adicionar */
+    --button-primary-hover: #45a049; /* Cor de fundo do botão adicionar (hover) */
+    --button-danger-bg: #f44336; /* Cor de fundo do botão excluir */
+    --button-danger-hover: #da190b; /* Cor de fundo do botão excluir (hover) */
+}
+
+/* Tema Escuro (quando a classe .dark-theme estiver no body) */
+body.dark-theme {
+    --bg-color: #2c2c2c;
+    --container-bg: #3c3c3c;
+    --text-color: #f0f0f0;
+    --input-border-color: #555;
+    --task-item-bg: #4a4a4a;
+    --task-item-border: #5a5a5a;
+    --task-completed-text: #888;
+    --task-completed-bg: #5a5a5a;
+    --button-primary-bg: #66bb6a;
+    --button-primary-hover: #4CAF50;
+    --button-danger-bg: #ef5350;
+    --button-danger-hover: #f44336;
+}
+
+/* --- Estilos Gerais --- */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background-color: var(--bg-color); /* Usa a variável CSS */
+    color: var(--text-color); /* Usa a variável CSS */
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Alinha no topo, para não ficar no meio da tela grande */
-    min-height: 100vh; /* Ocupa 100% da altura da viewport */
+    align-items: flex-start;
+    min-height: 100vh;
     margin: 0;
-    padding-top: 50px; /* Espaço do topo */
+    padding-top: 50px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transição suave para o tema */
 }
 
 .container {
-    background-color: #fff;
+    background-color: var(--container-bg); /* Usa a variável CSS */
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 500px;
-    text-align: center;
+    /* Remover text-align: center; se você quiser alinhar o header à esquerda */
+    /* text-align: center; */ 
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transição suave para o tema */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; /* Alinha os itens nas extremidades */
+    align-items: center;
+    margin-bottom: 25px;
 }
 
 h1 {
-    color: #333;
-    margin-bottom: 25px;
+    color: var(--text-color); /* Usa a variável CSS */
+    margin: 0; /* Remove margem padrão do h1 dentro do header */
 }
+
+/* Estilo do botão de alternar tema */
+#theme-toggle-btn {
+    padding: 8px 15px;
+    background-color: var(--text-color); /* Fundo com a cor do texto para contraste */
+    color: var(--container-bg); /* Texto com a cor do fundo do container */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#theme-toggle-btn:hover {
+    opacity: 0.8; /* Pequena opacidade no hover */
+}
+
 
 .input-area {
     display: flex;
-    gap: 10px; /* Espaço entre o input e o botão */
+    gap: 10px;
     margin-bottom: 25px;
+    align-items: center;
 }
 
 #task-input {
-    flex-grow: 1; /* Faz o input ocupar o máximo de espaço possível */
+    flex-grow: 1;
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--input-border-color); /* Usa a variável CSS */
     border-radius: 5px;
     font-size: 1em;
+    background-color: var(--container-bg); /* Garante que o input também mude de cor */
+    color: var(--text-color); /* Garante que o texto do input mude de cor */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
-
 
 #add-task-btn {
     padding: 12px 20px;
-    background-color: #4CAF50;
+    background-color: var(--button-primary-bg); /* Usa a variável CSS */
     color: white;
     border: none;
     border-radius: 5px;
@@ -51,18 +116,18 @@ h1 {
 }
 
 #add-task-btn:hover {
-    background-color: #45a049;
+    background-color: var(--button-primary-hover); /* Usa a variável CSS */
 }
 
 #task-list {
-    list-style: none; /* Remove os marcadores de lista padrão */
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
-#task-list li {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
+#task-list li.task-item {
+    background-color: var(--task-item-bg); /* Usa a variável CSS */
+    border: 1px solid var(--task-item-border); /* Usa a variável CSS */
     padding: 12px;
     margin-bottom: 10px;
     border-radius: 5px;
@@ -70,35 +135,19 @@ h1 {
     justify-content: space-between;
     align-items: center;
     font-size: 1.1em;
-    color: #555;
+    color: var(--text-color); /* Usa a variável CSS */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Para tarefas concluídas - você vai adicionar uma classe com JS */
 #task-list li.completed {
     text-decoration: line-through;
-    color: #999;
-    background-color: #e0e0e0;
+    color: var(--task-completed-text); /* Usa a variável CSS */
+    background-color: var(--task-completed-bg); /* Usa a variável CSS */
 }
 
-/* No seu style.css, adicione/ajuste: */
-
-#task-list li.task-item {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1em;
-    color: #555;
-    cursor: pointer; /* Adiciona um cursor de ponteiro para indicar que é clicável */
-}
-
-/* Estilização para o botão de exclusão */
 .delete-btn {
-    background-color: #f44336; /* Cor vermelha */
+    background-color: var(--button-danger-bg); /* Usa a variável CSS */
     color: white;
     border: none;
     padding: 8px 12px;
@@ -106,22 +155,126 @@ h1 {
     cursor: pointer;
     font-size: 0.9em;
     transition: background-color 0.3s ease;
-    margin-left: 15px; /* Espaço entre o texto da tarefa e o botão */
-    flex-shrink: 0; /* Garante que o botão não encolha */
+    margin-left: 15px;
+    flex-shrink: 0;
 }
 
 .delete-btn:hover {
-    background-color: #da190b;
-}
-
-/* Já existente, mas importante: */
-#task-list li.completed {
-    text-decoration: line-through;
-    color: #999;
-    background-color: #e0e0e0;
+    background-color: var(--button-danger-hover); /* Usa a variável CSS */
 }
 
 #task-list li span {
-    flex-grow: 1; /* Faz o span do texto crescer para ocupar o espaço */
-    text-align: left; /* Garante que o texto comece à esquerda */
+    flex-grow: 1;
+    text-align: left;
 }
+
+/* Estilo para o botão de "Completar" */
+.complete-btn {
+    background-color: #2196F3; /* Cor azul */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    margin-left: 10px; /* Espaço entre os botões */
+    flex-shrink: 0;
+}
+
+.complete-btn:hover {
+    background-color: #0b7dda;
+}
+
+/* Estilo para o botão de "Editar" */
+.edit-btn {
+    background-color: #ff9800; /* Cor laranja */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    margin-left: 10px; /* Espaço entre os botões */
+    flex-shrink: 0;
+}
+
+.edit-btn:hover {
+    background-color: #e68a00;
+}
+
+/* Ajuste no .delete-btn para consistência */
+.delete-btn {
+    background-color: var(--button-danger-bg); /* Usa a variável CSS */
+    color: white;
+    border: none;
+    padding: 8px 12px; /* Padronizado */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    margin-left: 10px; /* Reduzido para 10px para consistência entre os 3 botões */
+    flex-shrink: 0;
+}
+.delete-btn:hover {
+    background-color: var(--button-danger-hover);
+}
+
+/* Garante que o texto da tarefa não encolha demais com os botões */
+#task-list li span {
+    flex-grow: 1; 
+    text-align: left;
+    margin-right: 10px; /* Espaço entre o texto e o primeiro botão */
+    word-break: break-word; /* Ajuda a quebrar o texto se for muito longo */
+}
+
+/* Remove o cursor de ponteiro do span da tarefa, já que agora tem um botão específico */
+#task-list li.task-item {
+    cursor: default; /* Altera de volta para o padrão */
+}
+
+.filters {
+    display: flex;
+    justify-content: center; /* Centraliza os botões */
+    gap: 10px; /* Espaço entre os botões */
+    margin-bottom: 25px; /* Espaço abaixo dos filtros */
+}
+
+.filter-btn {
+    padding: 10px 15px;
+    background-color: var(--container-bg); /* Fundo similar ao container */
+    color: var(--text-color); /* Cor do texto padrão */
+    border: 1px solid var(--input-border-color); /* Borda sutil */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-btn:hover {
+    background-color: var(--task-item-bg); /* Pequena mudança no hover */
+    border-color: var(--button-primary-bg);
+}
+
+/* Estilo para o botão de filtro ativo */
+.filter-btn.active {
+    background-color: var(--button-primary-bg); /* Cor principal */
+    color: white;
+    border-color: var(--button-primary-bg);
+    pointer-events: none; /* Desabilita clique no botão ativo */
+    cursor: default; /* Altera o cursor */
+}
+
+/* Ajustes para alinhar melhor os botões de ação da tarefa */
+.task-buttons {
+    display: flex;
+    gap: 10px; /* Espaço entre os botões de Completar/Editar/Excluir */
+    flex-shrink: 0;
+}
+/* Se quiser um cursor de ponteiro apenas para o texto quando ele for o clicável (antes dos botões) */
+/*
+#task-list li span {
+    cursor: pointer; 
+}
+*/

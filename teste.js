@@ -1,4 +1,4 @@
-// ... (Classe Task - sem alterações) ...
+// --- Definição da Classe Tarefa (Task) ---
 class Task {
     constructor(description) {
         this.description = description;
@@ -14,21 +14,16 @@ class Task {
 // --- Definição da Classe TaskListManager ---
 class TaskListManager {
     constructor() {
+        // Obter referências aos elementos HTML
         this.taskInput = document.getElementById('task-input');
         this.addTaskBtn = document.getElementById('add-task-btn');
         this.taskListElement = document.getElementById('task-list');
-        this.themeToggleBtn = document.getElementById('theme-toggle-btn');
-
-        // NOVO: Referências aos botões de filtro
-        this.filterAllBtn = document.getElementById('filter-all-btn');
-        this.filterActiveBtn = document.getElementById('filter-active-btn');
-        this.filterCompletedBtn = document.getElementById('filter-completed-btn');
+        this.themeToggleBtn = document.getElementById('theme-toggle-btn'); // Referência ao botão de tema
 
         this.tasks = [];
-        this.currentFilter = 'all'; // NOVO: Estado do filtro atual (all, active, completed)
 
         this.loadTasks();
-        this.loadTheme();
+        this.loadTheme(); // Carrega o tema salvo no localStorage
         this.setupEventListeners();
     }
 
@@ -39,12 +34,8 @@ class TaskListManager {
                 this.addTask();
             }
         });
+        // Ouvinte de evento para o botão de tema
         this.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
-
-        // NOVO: Ouvintes de evento para os botões de filtro
-        this.filterAllBtn.addEventListener('click', () => this.setFilter('all'));
-        this.filterActiveBtn.addEventListener('click', () => this.setFilter('active'));
-        this.filterCompletedBtn.addEventListener('click', () => this.setFilter('completed'));
     }
 
     isTaskDuplicate(description) {
@@ -69,7 +60,7 @@ class TaskListManager {
         this.tasks.push(newTask);
 
         this.saveTasks();
-        this.renderTasks(); // Renderiza com o filtro atual
+        this.renderTasks();
         this.taskInput.value = '';
         this.taskInput.focus();
     }
@@ -77,7 +68,7 @@ class TaskListManager {
     removeTask(id) {
         this.tasks = this.tasks.filter(task => task.id !== id);
         this.saveTasks();
-        this.renderTasks(); // Renderiza com o filtro atual
+        this.renderTasks();
     }
 
     toggleTaskCompletion(id) {
@@ -85,46 +76,14 @@ class TaskListManager {
         if (taskToToggle) {
             taskToToggle.toggleCompletion();
             this.saveTasks();
-            this.renderTasks(); // Renderiza com o filtro atual
+            this.renderTasks();
         }
     }
 
-    // NOVO: Método para filtrar e renderizar as tarefas
     renderTasks() {
         this.taskListElement.innerHTML = '';
 
-        let filteredTasks = [];
-        if (this.currentFilter === 'all') {
-            filteredTasks = this.tasks;
-        } else if (this.currentFilter === 'active') {
-            filteredTasks = this.tasks.filter(task => !task.isCompleted);
-        } else if (this.currentFilter === 'completed') {
-            filteredTasks = this.tasks.filter(task => task.isCompleted);
-        }
-
-        // Se não houver tarefas no filtro, exibe uma mensagem
-        if (filteredTasks.length === 0 && this.tasks.length > 0) {
-            const noTasksMessage = document.createElement('li');
-            noTasksMessage.textContent = `Nenhuma tarefa ${this.currentFilter === 'active' ? 'ativa' : 'concluída'} encontrada.`;
-            noTasksMessage.style.textAlign = 'center';
-            noTasksMessage.style.fontStyle = 'italic';
-            noTasksMessage.style.color = 'var(--text-color)';
-            noTasksMessage.style.padding = '20px';
-            this.taskListElement.appendChild(noTasksMessage);
-            return; // Sai da função após exibir a mensagem
-        } else if (this.tasks.length === 0) {
-             const noTasksMessage = document.createElement('li');
-            noTasksMessage.textContent = "Adicione sua primeira tarefa!";
-            noTasksMessage.style.textAlign = 'center';
-            noTasksMessage.style.fontStyle = 'italic';
-            noTasksMessage.style.color = 'var(--text-color)';
-            noTasksMessage.style.padding = '20px';
-            this.taskListElement.appendChild(noTasksMessage);
-            return;
-        }
-
-
-        filteredTasks.forEach(task => { // Itera sobre as tarefas FILTRADAS
+        this.tasks.forEach(task => {
             const listItem = document.createElement('li');
             listItem.classList.add('task-item');
 
@@ -148,7 +107,7 @@ class TaskListManager {
             const editBtn = document.createElement('button');
             editBtn.textContent = 'Editar';
             editBtn.classList.add('edit-btn');
-            editBtn.addEventListener('click', () => this.editTask(task.id));
+            editBtn.addEventListener('click', () => this.editTask(task.id)); // taskTextSpan não é necessário mais aqui
             buttonGroup.appendChild(editBtn);
 
             const deleteBtn = document.createElement('button');
@@ -162,7 +121,8 @@ class TaskListManager {
         });
     }
 
-    editTask(id) {
+    // Método para editar uma tarefa
+    editTask(id) { // Removido taskTextSpanElement do parâmetro
         const taskToEdit = this.tasks.find(task => task.id === id);
         if (!taskToEdit) return;
 
@@ -179,7 +139,7 @@ class TaskListManager {
             return;
         }
 
-        const isDuplicate = this.tasks.some(task =>
+        const isDuplicate = this.tasks.some(task => 
             task.id !== id && task.description.toLowerCase() === newDescription.toLowerCase()
         );
 
@@ -190,9 +150,10 @@ class TaskListManager {
 
         taskToEdit.description = newDescription;
         this.saveTasks();
-        this.renderTasks(); // Renderiza com o filtro atual
+        this.renderTasks();
     }
 
+    // MÉTODOS ABAIXO DEVEM ESTAR DENTRO DA CLASSE TaskListManager
     saveTasks() {
         localStorage.setItem('tasks', JSON.stringify(this.tasks));
     }
@@ -200,39 +161,17 @@ class TaskListManager {
     loadTasks() {
         const tasksFromStorage = localStorage.getItem('tasks');
         if (tasksFromStorage) {
-            this.tasks = JSON.parse(tasksFromStorage).map(taskData => {
-                const newTask = new Task(taskData.description);
-                newTask.isCompleted = taskData.isCompleted;
-                newTask.id = taskData.id;
+            this.tasks = JSON.parse(tasksFromStorage).map(task => {
+                const newTask = new Task(task.description);
+                newTask.isCompleted = task.isCompleted;
+                newTask.id = task.id;
                 return newTask;
             });
-            // Não renderiza aqui, pois renderTasks() será chamado no final do constructor
-            // para garantir que o filtro inicial seja aplicado.
+            this.renderTasks();
         }
     }
 
-    // NOVO: Método para definir o filtro e atualizar a interface
-    setFilter(filter) {
-        this.currentFilter = filter; // Atualiza o estado do filtro
-        this.updateFilterButtons(); // Atualiza a classe 'active' nos botões
-        this.renderTasks(); // Renderiza as tarefas com o novo filtro
-    }
-
-    // NOVO: Método para atualizar o estilo dos botões de filtro
-    updateFilterButtons() {
-        this.filterAllBtn.classList.remove('active');
-        this.filterActiveBtn.classList.remove('active');
-        this.filterCompletedBtn.classList.remove('active');
-
-        if (this.currentFilter === 'all') {
-            this.filterAllBtn.classList.add('active');
-        } else if (this.currentFilter === 'active') {
-            this.filterActiveBtn.classList.add('active');
-        } else if (this.currentFilter === 'completed') {
-            this.filterCompletedBtn.classList.add('active');
-        }
-    }
-
+    // Método para alternar o tema
     toggleTheme() {
         document.body.classList.toggle('dark-theme');
         const isDark = document.body.classList.contains('dark-theme');
@@ -240,6 +179,7 @@ class TaskListManager {
         this.themeToggleBtn.textContent = isDark ? 'Modo Claro' : 'Modo Escuro';
     }
 
+    // Carrega o tema salvo do localStorage ao iniciar
     loadTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
@@ -249,7 +189,7 @@ class TaskListManager {
             this.themeToggleBtn.textContent = 'Modo Escuro';
         }
     }
-}
+} // <--- ESTA CHAVE ESTAVA FALTANDO OU ESTAVA NO LUGAR ERRADO!
 
 // --- Ponto de Entrada da Aplicação ---
 document.addEventListener('DOMContentLoaded', () => {
